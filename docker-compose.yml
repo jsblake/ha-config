@@ -1,0 +1,26 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: home-assistant
+    image: homeassistant/home-assistant:latest
+    volumes:
+      - /srv/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    depends_on:
+      - mqtt
+    restart: unless-stopped
+    ports:
+      - "8123:8123"
+  mqtt:
+    container_name: mqtt
+    image: eclipse-mosquitto:latest
+    volumes:
+      - /srv/homeassistant/mqtt/config:/mosquitto/config
+      - /srv/homeassistant/mqtt/log:/mosquitto/log
+      - /srv/homeassistant/mqtt/data:/mosquitto/data 
+    ports:
+      - "9001:9001"
+      - "1883:1883"
+    restart: unless-stopped 
