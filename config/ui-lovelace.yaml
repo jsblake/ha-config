@@ -3,13 +3,37 @@ views:
   - title: Main
     id: main
     cards:
-      - id: doors
-        type: entities
+      - type: entity-filter
         entities:
           - sensor.balcony_door
           - sensor.balcony_window
           - sensor.front_door
-      - id: thermostat
+        state_filter:
+          - "open"
+        show_empty: False
+      - type: horizontal-stack
+        cards: 
+         - id: commute
+           type: gauge
+           entity: sensor.home_to_work
+           title: Time to Work
+           min: 10
+           max: 60
+           severity:
+             green: 0
+             yellow: 25
+             red: 40
+         - id: time-to-becca
+           type: gauge
+           entity: sensor.home_to_becca
+           title: Time to Becca
+           min: 15
+           max: 70
+           severity:
+             green: 0
+             yellow: 35
+             red: 45
+      - id: thermostat_main
         type: thermostat
         entity: climate.hallway
       - id: all_lights
@@ -46,7 +70,7 @@ views:
     id: bedroom
     theme: dark-mode
     cards: 
-      - id: thermostat
+      - id: thermostat_bedroom
         type: thermostat
         entity: climate.hallway
       - id: bedroom_lamp
