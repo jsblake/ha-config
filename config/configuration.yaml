@@ -44,6 +44,12 @@ cloud:
       switch.outdoor_xmas:
         display_categories: LIGHT     
 
+homekit:
+  auto_start: False
+  filter:
+    include_domains:
+      - climate
+
 mqtt:
   broker: !secret mqtt_broker
   birth_message:
@@ -231,6 +237,16 @@ remote:
     activity: Watch TV
 
 automation:
+- alias: 'Start HomeKit'
+  trigger:
+    - platform: event
+      event_type: zwave.network_ready
+    - platform: event
+      event_type: zwave.network_complete
+    - platform: event
+      event_type: zwave.network_complete_some_dead
+  action:
+    - service: homekit.start
 - alias: 'Test Automation'
   trigger:
     platform: state
