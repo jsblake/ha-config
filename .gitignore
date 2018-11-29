@@ -7,7 +7,7 @@
 !*.yml
 !.gitignore
 !*.md
-
+!config
 # Ignore folders.
 .storage
 .cloud

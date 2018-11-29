@@ -13,6 +13,20 @@ views:
         show_empty: False
       - type: horizontal-stack
         cards: 
+         - type: sensor
+           entity: sensor.hallway_thermostat_temperature
+           title: Indoor Temp
+           graph: line
+           detail: 2
+           hours_to_show: 24
+         - type: sensor
+           entity: sensor.wx_temperature
+           title: Outdoor Temp
+           graph: line
+           detail: 2
+           hours_to_show: 24
+      - type: horizontal-stack
+        cards: 
          - id: commute
            type: gauge
            entity: sensor.home_to_work
