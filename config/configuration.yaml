@@ -1,0 +1,362 @@
+homeassistant:
+  name: Home
+  latitude: !secret latitude
+  longitude: !secret longitude
+  elevation: !secret elevation
+  unit_system: imperial
+  time_zone: !secret time_zone
+  customize: !include customize.yaml
+
+frontend:
+
+config:
+
+updater:
+
+recorder:
+
+discovery:
+
+history:
+
+logbook:
+
+sun:
+
+cloud:
+  alexa:
+    filter:
+      include_entities:
+        - light.hallway_overhead
+        - light.kitchen_overhead
+        - light.hallway_front
+        - light.kitchen_counter
+        - light.bedroom_overhead
+        - light.bedroom_lamp
+        - light.living_room_overhead
+        - light.living_room_lamp
+        - switch.outdoor_xmas
+        - scene.readyforbed
+        - scene.departure
+        - scene.goodnight
+        - scene.arrival
+    entity_config:
+      switch.outdoor_xmas:
+        display_categories: LIGHT     
+
+mqtt:
+  broker: !secret mqtt_broker
+  birth_message:
+    qos: 2
+    topic: 'hass/status'
+    payload: 'online'
+  will_message:
+    qos: 2
+    topic: 'hass/status'
+    payload: 'offline'
+
+weather:
+  - platform: darksky
+    mode: daily
+    api_key: !secret darksky_api_key
+
+notify:
+  - name: email
+    platform: smtp
+    server: !secret smtp_server
+    port: !secret smtp_port
+    timeout: 15
+    sender: !secret smtp_from
+    encryption: !secret smtp_encryption
+    username: !secret smtp_username
+    password: !secret smtp_password
+    recipient:
+      - !secret smtp_to
+    sender_name: !secret smtp_sender_name
+
+sensor:
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'time_utc'
+  - platform: mqtt
+    name: joseph_iphone
+    state_topic: !secret joseph_iphone_topic
+    qos: 2
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+  - platform: mqtt
+    name: joseph_watch
+    state_topic: !secret joseph_watch_topic
+    qos: 2
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'  
+  - platform: pollen
+    zip_code: !secret zipcode
+    monitored_conditions:
+     - allergy_average_forecasted
+     - allergy_average_historical
+     - allergy_index_today
+     - allergy_index_tomorrow
+     - allergy_index_yesterday
+     - disease_average_forecasted
+  - platform: template
+    sensors:
+      balcony_window:
+        friendly_name: "Balcony Window"
+        value_template: >-
+          {% if is_state('binary_sensor.ecolink_doorwindow_sensor_sensor', 'off') %}
+            closed
+          {% else %}
+            open
+          {% endif %}
+      balcony_door:
+        friendly_name: "Balcony Door"
+        value_template: >-
+          {% if is_state('binary_sensor.aeotec_zw097_dry_contact_sensor_gen5_sensor', 'on') %}
+            closed
+          {% else %}
+            open
+          {% endif %}
+      front_door:
+        friendly_name: "Front Door"
+        value_template: >-
+          {% if is_state('binary_sensor.aeotec_zw097_dry_contact_sensor_gen5_sensor_2', 'on') %}
+            closed
+          {% else %}
+            open
+          {% endif %}
+  - platform: waze_travel_time
+    origin: !secret waze_home
+    destination: !secret waze_work
+    region: 'NA'
+    name: 'Home to Work'
+    excl_filter: 'HOV'
+  - platform: waze_travel_time
+    destination: !secret waze_home
+    origin: !secret waze_work
+    region: 'NA'
+    name: 'Work to Home'
+    excl_filter: 'HOV'
+  - platform: waze_travel_time
+    origin: !secret waze_home
+    destination: !secret waze_becca
+    region: 'NA'
+    name: 'Home to Becca'
+    excl_filter: 'HOV'
+  - platform: waqi
+    token: !secret wagi_api_key
+    locations:
+      - !secret state
+  - platform: darksky
+    name: 'Wx'
+    api_key: !secret darksky_api_key
+    update_interval: '00:05:00'
+    monitored_conditions:
+     - summary
+     - precip_type
+     - precip_intensity
+     - precip_probability
+     - temperature
+     - wind_speed
+     - wind_bearing
+     - cloud_cover
+     - humidity
+     - temperature_high
+     - temperature_low
+     - precip_intensity_max
+
+nest:
+   client_id: !secret nest_client_id
+   client_secret: !secret nest_client_secret
+
+input_boolean:
+  occupied:
+    name: Apartment is occupied
+    icon: mdi:account
+  sleep:
+    name: Sleep mode
+    icon: mdi:sleep
+  vacation:
+    name: Vacation mode
+    icon: mdi:account-arrow-right-outline
+
+hue:
+  bridges:
+    - host: !secret hue_bridge
+      allow_unreachable: true
+      allow_hue_groups: false
+
+light:
+  - platform: group
+    name: Bedroom Overhead
+    entities:
+      - light.bedroom_overhead1
+      - light.bedroom_overhead2
+      - light.bedroom_overhead3
+      - light.bedroom_overhead4
+  - platform: group
+    name: Bedroom Lamp
+    entities:
+      - light.right_bed
+      - light.left_bed
+  - platform: group
+    name: Living Room Lamp
+    entities:
+      - light.sofa
+      - light.tv_right
+      - light.tv_left
+  - platform: group
+    name: Living Room Overhead
+    entities:
+      - light.living_room_overhead1
+      - light.living_room_overhead2
+      - light.living_room_overhead3
+      - light.living_room_overhead4
+  - platform: group
+    name: Hallway Overhead
+    entities:
+      - light.hallway_end
+      - light.hallway_middle
+      - light.hallway_front
+  - platform: switch
+    name: kitchen_overhead
+    entity_id: switch.kitchen_overhead
+
+remote:
+  - platform: harmony
+    name: Living Room
+    host: !secret harmony_hub
+    activity: Watch TV
+
+automation:
+- alias: 'Test Automation'
+  trigger:
+    platform: state
+    entity_id: sensor.front_door
+    to: 'closed'
+  action:
+    - service: notify.email
+      data:
+        message: "HA Test Message"
+        title: "HA Test Title"
+- alias: 'Christmas On at Sunset'
+  trigger:
+    platform: sun
+    event: sunset
+    offset: "+00:20:00"
+  action:
+    - service: switch.turn_on
+      entity_id: switch.outdoor_xmas
+- alias: 'Christmas Off at Sunset'
+  trigger:
+    platform: sun
+    event: sunrise
+    offset: "-00:20:00"
+  action:
+    - service: switch.turn_off
+      entity_id: switch.outdoor_xmas
+- alias: Occupancy_on
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.joseph_iphone
+      above: 10
+  action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id: input_boolean.occupied
+- alias: Occupancy_off
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.joseph_iphone
+      below: 10
+  action:
+    - service: homeassistant.turn_off
+      data:
+        entity_id: input_boolean.occupied
+
+scene:
+  - name: goodnight
+    entities:
+      light.hallway_overhead:
+        state: off
+      light.hallway_front:
+        state: off
+      light.kitchen_overhead:
+        state: off
+      light.kitchen_counter:
+        state: off
+      light.living_room_overhead:
+        state: off
+      light.living_room_lamp:
+        state: off
+      light.bedroom_overhead:
+        state: off
+      light.bedroom_lamp:
+        state: off
+  - name: readyforbed
+    entities:
+      light.hallway_overhead:
+        state: off
+      light.hallway_front:
+        state: on
+        brightness: 255
+        color_temp: 326
+      light.kitchen_overhead:
+        state: off
+      light.living_room_overhead:
+        state: off
+      light.bedroom_overhead:
+        state: off
+      light.bedroom_lamp:
+        state: on
+        color_temp: 326
+        brightness: 255
+      light.living_room_lamp:
+        state: off
+      remote.living_room_3:
+        state: off
+  - name: departure
+    entities:
+      light.hallway_overhead:   
+        state: off                
+      light.kitchen_overhead:    
+        state: off         
+      light.kitchen_counter:
+        state: off
+      light.living_room_overhead: 
+        state: off                       
+      light.bedroom_overhead:            
+        state: off      
+      light.bedroom_lamp:        
+        state: off          
+      light.living_room_lamp:
+        state: off
+      light.hallway_front:
+        state: on
+        brightness: 255
+        color_temp: 326
+  - name: arrival
+    entities:
+      light.hallway_overhead:
+        state: on
+        brightness_pct: 100
+      light.kitchen_overhead:
+        state: on
+      light.living_room_overhead:
+        state: on
+        brightness_pct: 100
+      light.bedroom_overhead:
+        state: on
+        brightness_pct: 100 
+  - name: test
+    entities:
+      light.sofa:
+        state: true
+        kelvin: 2500
+        brightness_pct: 100
+
+group: !include groups.yaml
+#automation: !include automations.yaml
+script: !include scripts.yaml

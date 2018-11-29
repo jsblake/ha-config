@@ -1,0 +1,69 @@
+title: Unit 3121
+views:
+  - title: Main
+    id: main
+    cards:
+      - id: doors
+        type: entities
+        entities:
+          - sensor.balcony_door
+          - sensor.balcony_window
+          - sensor.front_door
+      - id: thermostat
+        type: thermostat
+        entity: climate.hallway
+      - id: all_lights
+        type: entity-button
+        entity: group.all_lights
+        icon: mdi:home-modern
+        name: Turn off all lights
+        tap_action: toggle
+      - id: hallway
+        type: entity-button
+        entity: light.hallway_overhead
+        icon: mdi:lightbulb-outline
+        name: All Hallway Lights
+        tap_action: toggle
+      - id: frondoor
+        type: entity-button
+        entity: light.hallway_front
+        icon: mdi:lightbulb-outline
+        name: Front Door Light
+        tap_action: toggle
+      - id: bedroom
+        type: entity-button
+        entity: light.bedroom_lamp
+        icon: mdi:hotel
+        tap_action: toggle
+        name: Bedroom Lights
+      - id: kitchen
+        type: entity-button
+        entity: light.kitchen_overhead
+        icon: mdi:fridge
+        tap_action: toggle
+        name: Kitchen Overhead
+  - title: Bedroom
+    id: bedroom
+    theme: dark-mode
+    cards: 
+      - id: thermostat
+        type: thermostat
+        entity: climate.hallway
+      - id: bedroom_lamp
+        type: light
+        entity: light.bedroom_lamp
+        icon: mdi:hotel
+        tap_action: toggle
+        name: Lamps
+      - id: bedroom_overhead
+        type: light
+        entity: light.bedroom_overhead
+        icon: mdi:ceiling-light
+        tap_action: toggle
+        name: Overhead
+      - id: sleep_mode
+        type: entity-button
+        entity: input_boolean.sleep
+        icon: mdi:hotel
+        tap_action: toggle
+        name: Sleep Mode

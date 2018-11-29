@@ -1,0 +1,75 @@
+light.living_room_fan_1:
+  hidden: true
+light.living_room_fan_2:
+  hidden: true
+light.living_room_fan_3:
+  hidden: true
+light.hallway_2:
+  hidden: true
+light.hallway_3:
+  hidden: true
+light.hallway_4:
+  hidden: true
+light.hallway_5:
+  hidden: true
+light.lifx_a19_2020a1:
+  hidden: true
+light.tv_right:
+  hidden: true
+light.sofa:
+  hidden: true
+light.hue_white_light_1:
+  hidden: true
+light.left_bed:
+  hidden: true
+light.right_bed:
+  hidden: true
+switch.onoff_switch_switch:
+  friendly_name: Kitchen Overhead SW
+  hidden: true
+sensor.aeotec_zw097_dry_contact_sensor_gen5_access_control:
+  hidden: true
+sensor.aeotec_zw097_dry_contact_sensor_gen5_access_control_2:
+  hidden: true
+sensor.aeotec_zw097_dry_contact_sensor_gen5_alarm_level:
+  hidden: true
+sensor.aeotec_zw097_dry_contact_sensor_gen5_alarm_level_2:
+  hidden: true
+sensor.aeotec_zw097_dry_contact_sensor_gen5_alarm_type:
+  hidden: true
+sensor.aeotec_zw097_dry_contact_sensor_gen5_alarm_type_2:
+  hidden: true
+sensor.aeotec_zw097_dry_contact_sensor_gen5_sourcenodeid:
+  hidden: true
+sensor.aeotec_zw097_dry_contact_sensor_gen5_sourcenodeid_2:
+  hidden: true
+sensor.ecolink_doorwindow_sensor_alarm_level:
+  hidden: true
+sensor.ecolink_doorwindow_sensor_alarm_type:
+  hidden: true
+sensor.ecolink_doorwindow_sensor_burglar:
+  hidden: true
+sensor.ecolink_doorwindow_sensor_sourcenodeid:
+  hidden: true
+light.bedroom_overhead1:
+  hidden: true
+light.bedroom_overhead2:
+  hidden: true
+light.bedroom_overhead4:
+  hidden: true
+light.living_room_overhead2:
+  hidden: true
+light.living_room_overhead3:
+  hidden: true
+light.living_room_overhead4:
+  hidden: true
+light.living_room_overhead1:
+  hidden: true
+light.hallway_end:
+  hidden: true
+light.hallway_middle:
+  hidden: true
+light.bedroom_overhead3:
+  hidden: true
+light.tv_left:
+  hidden: true
