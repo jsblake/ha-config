@@ -7,9 +7,9 @@
 !*.yml
 !.gitignore
 !*.md
-!www
+!www/
 !config
-!launch.sh
+!*.sh
 # Ignore folders.
 .storage
 .cloud
@@ -19,3 +19,5 @@
 ip_bans.yaml
 secrets.yaml
 known_devices.yaml
+webostv.conf
+harmony*.conf
