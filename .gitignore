@@ -8,6 +8,7 @@
 !.gitignore
 !*.md
 !config
+!launch.sh
 # Ignore folders.
 .storage
 .cloud

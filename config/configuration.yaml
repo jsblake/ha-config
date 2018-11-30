@@ -65,6 +65,9 @@ weather:
     api_key: !secret darksky_api_key
 
 notify:
+  - platform: webostv
+    name: livingroom_tv
+    host: 192.168.1.183
   - name: email
     platform: smtp
     server: !secret smtp_server
@@ -176,15 +179,15 @@ nest:
    client_secret: !secret nest_client_secret
 
 input_boolean:
-  occupied:
-    name: Apartment is occupied
-    icon: mdi:account
+  away:
+    name: Away Mode
+    icon: mdi:account-off
   sleep:
-    name: Sleep mode
+    name: Sleep Mode
     icon: mdi:sleep
   vacation:
     name: Vacation mode
-    icon: mdi:account-arrow-right-outline
+    icon: mdi:account-arrow-right
 
 hue:
   bridges:
@@ -235,6 +238,15 @@ remote:
     activity: Watch TV
 
 automation:
+- alias: 'Test Automation'
+  trigger:
+    platform: state
+    entity_id: sensor.front_door
+    to: 'closed'
+  action:
+    - service: notify.livingroom_tv
+      data:
+        message: "HA Test Message"
 - alias: 'Start HomeKit'
   trigger:
     - platform: event
@@ -245,16 +257,6 @@ automation:
       event_type: zwave.network_complete_some_dead
   action:
     - service: homekit.start
-- alias: 'Test Automation'
-  trigger:
-    platform: state
-    entity_id: sensor.front_door
-    to: 'closed'
-  action:
-    - service: notify.email
-      data:
-        message: "HA Test Message"
-        title: "HA Test Title"
 - alias: 'Christmas On at Sunset'
   trigger:
     platform: sun
@@ -271,24 +273,24 @@ automation:
   action:
     - service: switch.turn_off
       entity_id: switch.outdoor_xmas
-- alias: Occupancy_on
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.joseph_iphone
-      above: 10
-  action:
-    - service: homeassistant.turn_on
-      data:
-        entity_id: input_boolean.occupied
-- alias: Occupancy_off
+- alias: away_on
   trigger:
     - platform: numeric_state
       entity_id: sensor.joseph_iphone
       below: 10
   action:
+    - service: homeassistant.turn_on
+      data:
+        entity_id: input_boolean.away
+- alias: away_off
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.joseph_iphone
+      above: 10
+  action:
     - service: homeassistant.turn_off
       data:
-        entity_id: input_boolean.occupied
+        entity_id: input_boolean.away
 
 scene:
   - name: goodnight

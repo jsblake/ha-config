@@ -3,27 +3,45 @@ views:
   - title: Main
     id: main
     cards:
-      - type: entity-filter
+      - &alerts
+        type: entity-filter
         entities:
-          - sensor.balcony_door
-          - sensor.balcony_window
-          - sensor.front_door
+          - entity: sensor.balcony_door
+            icon: mdi:door-open
+          - entity: sensor.balcony_window
+            icon: mdi:window-open
+          - entity: sensor.front_door
+            icon: mdi:door-open
+          - entity: binary_sensor.home_away
+            name: Nest Away
+            icon: mdi:account-off
+          - entity: input_boolean.away
+          - entity: input_boolean.sleep
+          - entity: input_boolean.vacation
         state_filter:
           - "open"
+          - "on"
         show_empty: False
+        card:
+          type: glance
+          show_state: false
+      - type: picture-entity
+        entity: camera.parking
+        show_name: False
+        show_state: False
       - type: horizontal-stack
         cards: 
          - type: sensor
            entity: sensor.hallway_thermostat_temperature
            title: Indoor Temp
            graph: line
-           detail: 2
+           detail: 1
            hours_to_show: 24
          - type: sensor
            entity: sensor.wx_temperature
            title: Outdoor Temp
            graph: line
-           detail: 2
+           detail: 1
            hours_to_show: 24
       - type: horizontal-stack
         cards: 
@@ -36,18 +54,18 @@ views:
            severity:
              green: 0
              yellow: 25
-             red: 40
+             red: 35
          - id: time-to-becca
            type: gauge
            entity: sensor.home_to_becca
            title: Time to Becca
-           min: 15
+           min: 20
            max: 70
            severity:
              green: 0
              yellow: 35
              red: 45
-      - id: thermostat_main
+      - &thermostat
         type: thermostat
         entity: climate.hallway
       - id: all_lights
@@ -84,24 +102,22 @@ views:
     id: bedroom
     theme: dark-mode
     cards: 
-      - id: thermostat_bedroom
-        type: thermostat
-        entity: climate.hallway
-      - id: bedroom_lamp
-        type: light
-        entity: light.bedroom_lamp
-        icon: mdi:hotel
-        tap_action: toggle
-        name: Lamps
-      - id: bedroom_overhead
-        type: light
-        entity: light.bedroom_overhead
-        icon: mdi:ceiling-light
-        tap_action: toggle
-        name: Overhead
-      - id: sleep_mode
-        type: entity-button
-        entity: input_boolean.sleep
-        icon: mdi:hotel
-        tap_action: toggle
-        name: Sleep Mode
+      - *alerts
+      - *thermostat
+      - type: horizontal-stack
+        cards:
+        - type: light
+          entity: light.bedroom_lamp
+          icon: mdi:hotel
+          tap_action: toggle
+          name: Lamps
+        - type: light
+          entity: light.bedroom_overhead
+          icon: mdi:ceiling-light
+          tap_action: toggle
+          name: Overhead
+        - type: entity-button
+          entity: input_boolean.sleep
+          icon: mdi:hotel
+          tap_action: toggle
+          name: Sleep Mode
