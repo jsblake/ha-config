@@ -7,6 +7,7 @@
 !*.yml
 !.gitignore
 !*.md
+!www
 
 # Ignore folders.
 .storage
