@@ -21,6 +21,11 @@ logbook:
 
 sun:
 
+http:
+  base_url: test.wrez.net
+  trusted_networks: 
+    - 192.168.1.0/24
+
 cloud:
   alexa:
     filter:

@@ -1,10 +1,11 @@
 version: '3'
 services:
-#  reverseproxy:
-#    image: reverseproxy
-#    ports:
-#      - 80:80
-#      - 443:443
+  reverseproxy:
+    image: reverseproxy
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
   homeassistant:
     container_name: home-assistant
     image: homeassistant/home-assistant:latest
@@ -16,14 +17,7 @@ services:
     depends_on:
       - mqtt
     restart: unless-stopped
-    ports: 
-      - "8123:8123/tcp"
-      - "51827:51827/tcp"
-#      - "56700:56700/udp"
-#      - "49339:49339/udp"
-#      - "5353:5353/udp"
-#      - "40133:40133/udp"
-#    network_mode: host
+    network_mode: host
   mqtt:
     container_name: mqtt
     image: eclipse-mosquitto:latest

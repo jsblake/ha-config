@@ -1,4 +1,7 @@
 title: Unit 3121
+resources:
+  - url: /local/button-card/button-card.js
+    type: module
 views:
   - title: Main
     id: main
@@ -25,6 +28,9 @@ views:
         card:
           type: glance
           show_state: false
+      - type: "custom:button-card"
+        entity: input_boolean.vacation
+        show_state: true
       - type: picture-entity
         entity: camera.parking
         show_name: False

@@ -1,3 +1,6 @@
 [submodule "config/www/mini-graph-card"]
 	path = config/www/mini-graph-card
 	url = git@github.com:kalkih/mini-graph-card.git
+[submodule "config/www/button-card"]
+	path = config/www/button-card
+	url = git@github.com:kuuji/button-card.git
